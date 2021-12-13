@@ -44,4 +44,17 @@ rutas.get('/Examenes/:id_examen', async (req, res) => {
     res.json(examenes)
 })
 
+rutas.delete('/eliminar_examen/:id_examen', async (req, res) => {
+
+
+    const id_examen = req.params.id_examen
+
+    const examenes = await Examenes.findById(id_examen)    
+    await examenes.deleteOne()
+
+    res.json({
+        mensaje: "Examen eliminado correctamente"
+    })
+})
+
 module.exports = rutas

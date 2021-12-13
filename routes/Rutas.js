@@ -34,4 +34,14 @@ rutas.post('/crear_examen', async (req, res) => {
     res.json(examen)
 })
 
+
+rutas.get('/Examenes/:id_examen', async (req, res) => {
+
+    const id_examen = req.params.id_examen
+
+    const examenes = await Examenes.findById(id_examen)
+
+    res.json(examenes)
+})
+
 module.exports = rutas

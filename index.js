@@ -1,9 +1,11 @@
 const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser');
+
+
 require('dotenv').config()
 
-
+const rutas_publicas = require("./routes/RutasPublicas")
 const rutas = require('./routes/Rutas')
 
 const app = express()
@@ -14,7 +16,9 @@ const cors_config = {
 
 var jsonParser = bodyParser.json()
  
-app.use('/api', jsonParser, cors(cors_config), rutas)
+
+app.use('/api', jsonParser, cors(cors_config), rutas_publicas)
+app.use('/api', jsonParser, cors(cors_config),  rutas)
 
 
 app.listen(puerto, () => {

@@ -56,6 +56,14 @@ rutas.get('/AgendaId/:id_agenda', async (req, res) => {
     res.json(agendas)
 })
 
+rutas.get('/AgendasIdIngresar/:id_agenda', async (req, res) => {
+
+    const id_agenda = req.params.id_agenda
+    const agenda = await Agenda.findById(id_agenda)
+
+    res.json(agenda)
+})
+
 rutas.get('/Agendas/:nombre_examen', async (req, res) => {
 
     const nombre_examen = req.params.nombre_examen
@@ -79,14 +87,14 @@ rutas.get('/AgendasExterno/:nombre_examen', async (req, res) => {
 })
 
 
-rutas.get('/AgendasExterno/:cedula', async (req, res) => {
+rutas.get('/AgendasExternoCedula/:cedula', async (req, res) => {
 
-    const cedula= req.params.cedula
+    const cedula = req.params.cedula
     console.log(cedula);
 
-    const paciente = await Agenda.find( {paciente: cedula})
+    const pacientes = await Agenda.find( {paciente: cedula})
 
-    res.json(paciente)
+    res.json(pacientes)
 })
 
 rutas.delete('/eliminar_examen/:id_examen', async (req, res) => {
@@ -116,7 +124,42 @@ rutas.delete('/eliminar_agenda/:id_agenda', async (req, res) => {
     })
 })
 
+rutas.put('/eliminar_agendaExterno/:id_agenda', async (req, res) => {
 
+     
+    const id_agenda = req.params.id_agenda;
+  
+    const agenda = await Agenda.findById(id_agenda);
+    
+    agenda.paciente = ""
+    agenda.nombre = ""
+    agenda.estado = "Disponible"
+  
+    await agenda.save()
+
+
+    res.json({
+        mensaje: "Agendamiento eliminado correctamente"
+    })
+})
+
+rutas.put('/ingresar_resultado/:id_agenda', async (req, res) => {
+
+     
+    const id_agenda = req.params.id_agenda;
+  
+    const agenda = await Agenda.findById(id_agenda);
+    
+    agenda.resultado = req.body.resultado
+    
+  
+    await agenda.save()
+
+
+    res.json({
+        mensaje: "Agendamiento eliminado correctamente"
+    })
+})
 
 
 rutas.post('/crear_agenda', async (req, res) => {
@@ -171,6 +214,8 @@ rutas.put("/actualizar_examen/:id_examen", async (req, res) => {
   
     const agenda = await Agenda.findById(id_agenda);
     agenda.estado = "No Disponible"
+    agenda.paciente = req.body.paciente
+    agenda.nombre = req.body.nombre
     
     console.log(id_agenda)
     
